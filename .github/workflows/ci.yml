@@ -1,0 +1,35 @@
+name: Docker Compose CI
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .env file
+      run: cp .env.example .env
+
+    - name: Build and start Docker containers
+      run: docker compose up -d --build
+
+    - name: Wait for Laravel to initialize
+      run: |
+        echo "Menunggu container untuk mendownload dan menginisialisasi Laravel..."
+        # Berikan waktu untuk auto-install berjalan di docker
+        sleep 45
+        docker compose logs app
+
+    - name: Verify Application is Running
+      run: |
+        # Memeriksa apakah http://localhost:8000 mengembalikan response
+        curl -f -s -o /dev/null http://localhost:8000 || (docker compose logs && exit 1)
+        
+    - name: Check Container Status
+      run: docker compose ps

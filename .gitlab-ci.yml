@@ -1,0 +1,25 @@
+image: docker:24.0.5
+
+services:
+  - docker:24.0.5-dind
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+stages:
+  - build_and_test
+
+build_and_test:
+  stage: build_and_test
+  before_script:
+    - apk add --no-cache curl docker-cli-compose
+    - cp .env.example .env
+  script:
+    - echo "Starting Docker Compose Build..."
+    - docker compose up -d --build
+    - echo "Waiting for Laravel to initialize inside app container..."
+    - sleep 45
+    - docker compose logs app
+    - echo "Testing Application UI / HTTP Response..."
+    - curl -f -s -o /dev/null http://localhost:8000 || (docker compose logs && exit 1)
+    - echo "Success!"

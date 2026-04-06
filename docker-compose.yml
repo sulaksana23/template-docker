@@ -1,0 +1,115 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        USR: ${USR:-sulaksana60}
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    image: laravel-app
+    container_name: laravel-app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+      SERVER_NAME: :80
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - "8000:80"
+      - "5173:5173"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - laravel-network
+    command: >
+      bash -c "
+      if [ ! -f artisan ]; then
+        echo '=== 1. Download Project Laravel (Langsung, tanpa subfolder) ===';
+        curl -sL "https://github.com/laravel/laravel/archive/refs/heads/master.tar.gz" | tar xz --strip-components=1;
+        composer install;
+        
+        echo '=== 2. Setup Koneksi Postgres & Redis otomatis di .env ===';
+        cp .env.example .env;
+        php artisan key:generate;
+        sed -i 's/DB_CONNECTION=sqlite/DB_CONNECTION=pgsql/' .env;
+        sed -i 's/# DB_HOST=127.0.0.1/DB_HOST=db/' .env;
+        sed -i 's/# DB_PORT=3306/DB_PORT=5432/' .env;
+        sed -i 's/# DB_DATABASE=laravel/DB_DATABASE=laravel/' .env;
+        sed -i 's/# DB_USERNAME=root/DB_USERNAME=root/' .env;
+        sed -i 's/# DB_PASSWORD=/DB_PASSWORD=root/' .env;
+        sed -i 's/CACHE_STORE=database/CACHE_STORE=redis/' .env;
+        sed -i 's/REDIS_HOST=127.0.0.1/REDIS_HOST=redis/' .env;
+        
+        echo '=== 3. Menginstal Breeze (React + Inertia + TS) ===';
+        composer require laravel/breeze --dev;
+        php artisan breeze:install react -n;
+        
+        echo '=== 4. Membangun Aset Frontend ===';
+        npm install --legacy-peer-deps;
+        npm run build;
+        
+        echo '=== 5. Menjalankan Migrasi Database ===';
+        # Tunggu database siap sedetik lalu migrate
+        sleep 2;
+        php artisan migrate --force;
+      else
+        echo '=== Laravel sudah terinstal, melewati instalasi awal ===';
+      fi;
+      
+      echo '=== 6. Server Berjalan: FrankenPHP ===';
+      exec frankenphp run --config /etc/caddy/Caddyfile --adapter caddyfile
+      "
+
+  db:
+    image: postgres:15-alpine
+    container_name: laravel-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-laravel}
+      POSTGRES_USER: ${DB_USERNAME:-root}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-root}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - laravel-network
+    # Optimasi RAM & Performa Postgres
+    command: postgres -c shared_buffers=128MB -c max_connections=50 -c work_mem=4MB -c maintenance_work_mem=16MB
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+
+  redis:
+    image: redis:alpine
+    container_name: laravel-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - laravel-network
+    # Optimasi RAM Redis
+    command: redis-server --maxmemory 64mb --maxmemory-policy allkeys-lru
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+
+networks:
+  laravel-network:
+    driver: bridge
+
+volumes:
+  db-data:
+  caddy_data:
+  caddy_config:
