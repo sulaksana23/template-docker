@@ -18,8 +18,18 @@ build_and_test:
     - echo "Starting Docker Compose Build..."
     - docker compose up -d --build
     - echo "Waiting for Laravel to initialize inside app container..."
-    - sleep 45
-    - docker compose logs app
-    - echo "Testing Application UI / HTTP Response..."
-    - curl -f -s -o /dev/null http://localhost:8000 || (docker compose logs && exit 1)
-    - echo "Success!"
+    - echo "Menunggu proses Laravel install, NPM build, dan FrankenPHP siap (bisa memakan waktu 2-3 menit)..."
+    - |
+      timeout_count=0
+      # Melakukan ping setiap 10 detik, maksimal 24 kali (240 detik / 4 menit)
+      while ! curl -f -s -o /dev/null http://docker:8000 && ! curl -f -s -o /dev/null http://localhost:8000; do
+        timeout_count=$((timeout_count+1))
+        if [ $timeout_count -ge 24 ]; then
+          echo "Waktu habis! Server tidak menyala."
+          docker compose logs
+          exit 1
+        fi
+        echo "Menunggu server menyala... ($timeout_count/24)"
+        sleep 10
+      done
+    - echo "Testing Application UI / HTTP Response... Sukses!"
