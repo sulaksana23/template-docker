@@ -49,11 +49,16 @@ services:
         sed -i 's/CACHE_STORE=database/CACHE_STORE=redis/' .env;
         sed -i 's/REDIS_HOST=127.0.0.1/REDIS_HOST=redis/' .env;
         
-        echo '=== 3. Menginstal Breeze (React + Inertia + TS) ===';
+        echo '=== 3. Menginstal Breeze & Spatie (Complete Package) ===';
         composer require laravel/breeze --dev;
+        composer require spatie/laravel-permission spatie/laravel-activitylog;
         php artisan breeze:install react -n;
         
-        echo '=== 3b. Menyuntikkan Template Premium Bali Tech (Metronic Style) ===';
+        echo '=== 3b. Menyiapkan Konfigurasi Spatie ===';
+        php artisan vendor:publish --provider="Spatie\Permission\PermissionServiceProvider";
+        php artisan vendor:publish --provider="Spatie\Activitylog\ActivitylogServiceProvider" --tag="activitylog-migrations";
+        
+        echo '=== 3c. Menyuntikkan Template Premium Bali Tech (Metronic Style) ===';
         if [ -d "template" ]; then
           cp -rv template/* ./;
           # Jangan hapus folder template agar bisa digunakan berkali-kali jika volume direset
@@ -63,10 +68,11 @@ services:
         npm install --legacy-peer-deps;
         npm run build;
         
-        echo '=== 5. Menjalankan Migrasi Database ===';
-        # Tunggu database siap sedetik lalu migrate
+        echo '=== 5. Menjalankan Migrasi & Seeder Database ===';
+        # Tunggu database siap sedetik lalu migrate (Ditambah Seeder)
         sleep 2;
         php artisan migrate --force;
+        php artisan db:seed --force;
         
         echo '=== 6. Memutuskan Git dari Template Boilerplate ===';
         if [ -d ".git" ]; then

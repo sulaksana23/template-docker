@@ -12,11 +12,11 @@ export default function Dashboard() {
                     </div>
                     <div className="flex space-x-3">
                         <button className="inline-flex items-center px-5 py-2.5 bg-white border border-slate-200 text-sm font-bold text-slate-700 rounded-xl hover:bg-slate-50 shadow-sm transition-all active:scale-95">
-                            <svg className="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z"/></svg>
+                            <svg className="w-4 h-4 mr-2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5l5 5v11a2 2 0 01-2 2z" /></svg>
                             Export Laporan
                         </button>
                         <button className="inline-flex items-center px-5 py-2.5 bg-indigo-600 text-sm font-bold text-white rounded-xl shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 transition-all active:scale-95">
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>
+                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" /></svg>
                             Buat Transaksi
                         </button>
                     </div>
@@ -37,7 +37,7 @@ export default function Dashboard() {
                         <div key={idx} className="bg-white p-6 rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
                             <div className="flex items-center justify-between mb-4">
                                 <div className={`w-12 h-12 bg-${stat.color}-100 text-${stat.color}-600 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon}/></svg>
+                                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={stat.icon} /></svg>
                                 </div>
                                 <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${stat.growth.startsWith('+') ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
                                     {stat.growth}
@@ -64,49 +64,43 @@ export default function Dashboard() {
                             </select>
                         </div>
                         <div className="h-72 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 flex flex-col items-center justify-center relative overflow-hidden group">
-                           {/* Decorative background grid */}
-                           <div className="absolute inset-0 opacity-20 pointer-events-none" 
-                                style={{backgroundImage: 'radial-gradient(#4f46e5 0.5px, transparent 0.5px)', backgroundSize: '24px 24px'}}></div>
-                           
-                           <svg className="w-16 h-16 text-slate-300 group-hover:text-indigo-400 transition-colors mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
-                           </svg>
-                           <p className="text-slate-400 font-medium">Modul Grafik Siap Diintegrasikan (Chart.js / Recharts)</p>
+                            {/* Decorative background grid */}
+                            <div className="absolute inset-0 opacity-20 pointer-events-none"
+                                style={{ backgroundImage: 'radial-gradient(#4f46e5 0.5px, transparent 0.5px)', backgroundSize: '24px 24px' }}></div>
+
+                            <svg className="w-16 h-16 text-slate-300 group-hover:text-indigo-400 transition-colors mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                            </svg>
+                            <p className="text-slate-400 font-medium">Modul Grafik Siap Diintegrasikan (Chart.js / Recharts)</p>
                         </div>
                     </div>
 
-                    {/* Active Sessions / Team */}
+                    {/* Recent Activity Log (Spatie Activitylog Style) */}
                     <div className="bg-white p-8 rounded-3xl border border-slate-200/60 shadow-sm flex flex-col">
-                        <h3 className="text-xl font-bold text-slate-800 mb-6">Staff Aktif</h3>
+                        <h3 className="text-xl font-bold text-slate-800 mb-6">Activity Log</h3>
                         <div className="space-y-6 flex-1">
                             {[
-                                { name: 'Sulaksana', role: 'CTO', status: 'Online', lastActive: '2m ago' },
-                                { name: 'Budi Rahma', role: 'Marketing', status: 'Meeting', lastActive: '15m ago' },
-                                { name: 'Dewi Ayu', role: 'Support', status: 'Online', lastActive: 'now' },
-                                { name: 'Antoni Putra', role: 'Developer', status: 'Away', lastActive: '1h ago' },
-                            ].map((user, idx) => (
-                                <div key={idx} className="flex items-center justify-between group cursor-pointer">
-                                    <div className="flex items-center space-x-4">
-                                        <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center font-black text-slate-400 group-hover:bg-indigo-600 group-hover:text-white transition-all">
-                                            {user.name.charAt(0)}
-                                        </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-slate-800">{user.name}</p>
-                                            <p className="text-xs text-slate-500">{user.role}</p>
-                                        </div>
+                                { user: 'Super Admin', action: 'Login ke Sistem', time: 'Baru saja', type: 'access' },
+                                { user: 'System', action: 'Migrasi Database Selesai', time: '2 menit lalu', type: 'system' },
+                                { user: 'Super Admin', action: 'Update Role: Admin Baru', time: '5 menit lalu', type: 'update' },
+                                { user: 'Bali Tech', action: 'Inisialisasi Template', time: '10 menit lalu', type: 'create' },
+                            ].map((log, idx) => (
+                                <div key={idx} className="flex items-start space-x-4 group cursor-pointer">
+                                    <div className="mt-1">
+                                        <div className={`w-3 h-3 rounded-full ${log.type === 'access' ? 'bg-emerald-500' :
+                                            log.type === 'system' ? 'bg-indigo-500' : 'bg-amber-500'
+                                            } ring-4 ring-slate-50`}></div>
                                     </div>
-                                    <div className="text-right">
-                                        <p className={`text-[10px] font-black uppercase px-2 py-0.5 rounded-md ${user.status === 'Online' ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-500'}`}>
-                                            {user.status}
-                                        </p>
-                                        <p className="text-[10px] text-slate-400 mt-1">{user.lastActive}</p>
+                                    <div className="flex-1">
+                                        <p className="text-sm font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">{log.action}</p>
+                                        <p className="text-xs text-slate-500">Oleh: {log.user} • {log.time}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <button className="w-full mt-8 py-3 text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-2xl transition-all">
-                            Lihat Semua Staff
+                            Lihat Semua Log
                         </button>
                     </div>
                 </div>
@@ -146,7 +140,7 @@ export default function Dashboard() {
                                         <td className="px-8 py-5 text-sm font-black text-slate-800">Rp {(Math.random() * 500 + 100).toFixed(3)}</td>
                                         <td className="px-8 py-5 text-right">
                                             <button className="p-2 text-slate-400 hover:text-indigo-600 transition-colors">
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" /></svg>
                                             </button>
                                         </td>
                                     </tr>

@@ -8,8 +8,10 @@ Boilerplate profesional untuk memulai proyek Laravel 13 dengan performa tinggi m
 
 - **Laravel 13 Core**: Versi terbaru dengan fitur paling mutakhir.
 - **FrankenPHP**: Application server berbasis Go yang ultra-cepat (pengganti PHP-FPM + Nginx).
+- **Spatie Role & Permission**: Sistem Role (Super Admin, Admin, User) yang sudah terkonfigurasi.
+- **Spatie Activity Log**: Audit trail otomatis untuk mencatat setiap perubahan data.
 - **Docker Ready**: Dilengkapi dengan PostgreSQL, Redis, dan Node.js 20.
-- **Auto-Setup**: Otomatis mengunduh Laravel, menginstall composer & npm, serta menjalankan migrasi hanya dengan satu perintah.
+- **Auto-Setup**: Otomatis mengunduh Laravel, menginstall composer & npm, serta menjalankan migrasi & seeder hanya dengan satu perintah.
 - **Git Detachment**: Otomatis memutuskan hubungan git dari template setelah instalasi pertama (menghindari salah push ke repo template).
 - **CI/CD Ready**: Konfigurasi GitHub Actions dan GitLab CI (Multi-branch: dev, staging, main) sudah tersedia.
 - **Modern Stack**: Support Tailwind CSS (v4), React, Inertia.js, dan TypeScript.
