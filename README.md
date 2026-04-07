@@ -75,9 +75,9 @@ Template ini mendukung alur kerja tim profesional:
 
 Jika template ini membantu mempercepat pekerjaan Anda, pertimbangkan untuk mentraktir saya kopi agar saya tetap semangat mengembangkan tools gratis lainnya!
 
-[![Trakteer](https://trackteer.id/images/qube/trakteer-button.png)](https://trakteer.id/sulaksana234)
+[![Trakteer](https://trakteer.id/images/qube/trakteer-button.png)](https://trakteer.id/bali_techsolution)
 
-**[Traktir saya di Trakteer](https://trakteer.id/sulaksana234)** 🚀
+**[KLIK DI SINI UNTUK TRAKTIR KOPI](https://trakteer.id/bali_techsolution)** 🚀
 
 ---
 
