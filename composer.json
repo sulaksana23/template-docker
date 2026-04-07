@@ -30,8 +30,8 @@
         "php": ">=8.2"
     },
     "support": {
-        "issues": "https://gitlab.com/bali-techsolution/laravel-docker-template/issues",
-        "source": "https://gitlab.com/bali-techsolution/laravel-docker-template"
+        "issues": "https://github.com/sulaksana23/template-docker/issues",
+        "source": "https://github.com/sulaksana23/template-docker"
     },
     "config": {
         "optimize-autoloader": true,

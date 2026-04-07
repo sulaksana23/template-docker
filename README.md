@@ -39,7 +39,7 @@ cd my-app
 Jika Anda ingin mengakses source code template-nya langsung:
 1. **Clone Repositori**:
    ```bash
-   git clone https://gitlab.com/bali-techsolution/laravel-docker-template.git my-app
+   git clone https://github.com/sulaksana23/template-docker.git my-app
    cd my-app
    ```
 
