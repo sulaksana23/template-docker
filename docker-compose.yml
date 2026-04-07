@@ -61,6 +61,16 @@ services:
         # Tunggu database siap sedetik lalu migrate
         sleep 2;
         php artisan migrate --force;
+        
+        echo '=== 6. Memutuskan Git dari Template Boilerplate ===';
+        if [ -d ".git" ]; then
+          rm -rf .git;
+          git init;
+          git add .;
+          git config user.email "developer@local"
+          git config user.name "Developer"
+          git commit -m "Initial commit from Laravel Docker Template" || true
+        fi
       else
         echo '=== Laravel sudah terinstal, melewati instalasi awal ===';
       fi;
