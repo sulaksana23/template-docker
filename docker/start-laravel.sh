@@ -79,6 +79,14 @@ composer_package_installed() {
   composer show "${package}" --no-interaction >/dev/null 2>&1
 }
 
+activitylog_trait_available() {
+  if [ ! -f vendor/autoload.php ]; then
+    return 1
+  fi
+
+  php -r "require 'vendor/autoload.php'; exit(trait_exists('Spatie\\\\Activitylog\\\\Traits\\\\LogsActivity') ? 0 : 1);"
+}
+
 ensure_spatie_packages() {
   ensure_composer_dependencies
 
@@ -97,6 +105,14 @@ ensure_spatie_packages() {
   # Refresh autoloader and clear caches so newly installed traits are always available.
   composer dump-autoload -o --no-interaction >/dev/null
   php artisan optimize:clear >/dev/null || true
+
+  # Safety net: package may be installed but trait still not loadable due stale autoload/cache.
+  if ! activitylog_trait_available; then
+    echo "=== Activitylog trait not loadable, forcing reinstall + autoload refresh ==="
+    composer require spatie/laravel-activitylog --no-interaction
+    composer dump-autoload -o --no-interaction >/dev/null
+    php artisan optimize:clear >/dev/null || true
+  fi
 }
 
 echo "=== Laravel bootstrap starting ==="
@@ -140,6 +156,7 @@ if [ ! -f artisan ]; then
   npm run build
 
   echo "=== 7. Run database migrations and seeders ==="
+  ensure_spatie_packages
   run_migrations_with_recovery 30 2
   retry_artisan "db:seed --force" 10 2
 else
