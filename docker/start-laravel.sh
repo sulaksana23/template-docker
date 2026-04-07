@@ -31,6 +31,33 @@ retry_artisan() {
   return 1
 }
 
+run_migrations_with_recovery() {
+  local attempts="${1:-30}"
+  local sleep_seconds="${2:-2}"
+
+  for attempt in $(seq 1 "${attempts}"); do
+    local output
+    if output="$(php artisan migrate --force 2>&1)"; then
+      echo "${output}"
+      return 0
+    fi
+
+    echo "${output}"
+
+    if echo "${output}" | grep -Eqi "Duplicate table|already exists|relation \".+\" already exists"; then
+      echo "=== Duplicate migration artifacts detected, running migrate:fresh for clean bootstrap ==="
+      php artisan migrate:fresh --force
+      return 0
+    fi
+
+    echo "Command 'php artisan migrate --force' failed (${attempt}/${attempts}), retrying in ${sleep_seconds}s..."
+    sleep "${sleep_seconds}"
+  done
+
+  echo "Command 'php artisan migrate --force' failed after ${attempts} attempts."
+  return 1
+}
+
 ensure_composer_dependencies() {
   if [ ! -f composer.json ]; then
     return 0
@@ -113,7 +140,7 @@ if [ ! -f artisan ]; then
   npm run build
 
   echo "=== 7. Run database migrations and seeders ==="
-  retry_artisan "migrate --force" 30 2
+  run_migrations_with_recovery 30 2
   retry_artisan "db:seed --force" 10 2
 else
   echo "=== Laravel already installed, skipping bootstrap ==="
