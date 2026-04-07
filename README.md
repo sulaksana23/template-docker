@@ -1,58 +1,89 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Laravel 13 Docker Template (FrankenPHP + PostgreSQL + Redis)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Boilerplate profesional untuk memulai proyek Laravel 13 dengan performa tinggi menggunakan **FrankenPHP**. Template ini dirancang untuk kemudahan penggunaan, efisiensi resource, dan siap untuk skala produksi.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## ✨ Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Laravel 13 Core**: Versi terbaru dengan fitur paling mutakhir.
+- **FrankenPHP**: Application server berbasis Go yang ultra-cepat (pengganti PHP-FPM + Nginx).
+- **Docker Ready**: Dilengkapi dengan PostgreSQL, Redis, dan Node.js 20.
+- **Auto-Setup**: Otomatis mengunduh Laravel, menginstall composer & npm, serta menjalankan migrasi hanya dengan satu perintah.
+- **Git Detachment**: Otomatis memutuskan hubungan git dari template setelah instalasi pertama (menghindari salah push ke repo template).
+- **CI/CD Ready**: Konfigurasi GitHub Actions dan GitLab CI (Multi-branch: dev, staging, main) sudah tersedia.
+- **Modern Stack**: Support Tailwind CSS (v4), React, Inertia.js, dan TypeScript.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Prasyarat
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Pastikan Anda sudah menginstal:
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🚀 Cara Penggunaan
 
-## Agentic Development
+Cukup jalankan langkah berikut, dan docker akan mengurus sisanya:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+1. **Clone Repositori**:
+   ```bash
+   git clone <url-repo-template-anda> my-new-project
+   cd my-new-project
+   ```
 
-```bash
-composer require laravel/boost --dev
+2. **Siapkan Environment**:
+   ```bash
+   cp .env.example .env
+   ```
 
-php artisan boost:install
-```
+3. **Jalankan Docker Compose**:
+   ```bash
+   docker compose up -d --build
+   ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 🏮 Apa yang terjadi saat `up` pertama kali?
+- Docker akan mengunduh core Laravel terbaru ke folder lokal.
+- Menjalankan `composer install` & `npm install`.
+- Membuat `.env` dan `APP_KEY`.
+- Mengatur koneksi database PostgreSQL & Redis secara otomatis.
+- Menjalankan migrasi database.
+- **Self-Destruct Git**: Folder `.git` dari template ini akan dihapus dan diganti dengan `git init` baru untuk proyek Anda (Hanya pada instalasi pertama).
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 🏗️ Struktur Docker
 
-## Code of Conduct
+- **App**: `Laravel 13` + `FrankenPHP` (Port 8000)
+- **DB**: `PostgreSQL 15` (Port 5432)
+- **Cache**: `Redis` (Port 6380)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## 📈 Alur CI/CD (GitFlow)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Template ini mendukung alur kerja tim profesional:
+1. **Branch `dev`**: Untuk pengembangan fitur harian (Auto-test).
+2. **Branch `staging`**: Untuk pengujian kualitas (Auto-deploy ke staging).
+3. **Branch `main`**: Untuk rilis produksi (Auto-deploy ke production).
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## ☕ Dukung Proyek Ini
+
+Jika template ini membantu mempercepat pekerjaan Anda, pertimbangkan untuk mentraktir saya kopi agar saya tetap semangat mengembangkan tools gratis lainnya!
+
+[![Trakteer](https://trackteer.id/images/qube/trakteer-button.png)](https://trakteer.id/sulaksana234)
+
+**[Traktir saya di Trakteer](https://trakteer.id/sulaksana234)** 🚀
+
+---
+
+## 📄 Lisensi
+
+Proyek ini bersifat Open Source di bawah lisensi [MIT](LICENSE). Bebas digunakan untuk proyek komersial maupun pribadi.
+
+---
+*Dibuat dengan ❤️ untuk komunitas Developer Indonesia.*
