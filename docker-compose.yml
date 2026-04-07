@@ -53,6 +53,12 @@ services:
         composer require laravel/breeze --dev;
         php artisan breeze:install react -n;
         
+        echo '=== 3b. Menyuntikkan Template Premium Bali Tech (Metronic Style) ===';
+        if [ -d "template" ]; then
+          cp -rv template/* ./;
+          # Jangan hapus folder template agar bisa digunakan berkali-kali jika volume direset
+        fi
+        
         echo '=== 4. Membangun Aset Frontend ===';
         npm install --legacy-peer-deps;
         npm run build;
