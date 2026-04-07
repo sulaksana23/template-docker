@@ -32,31 +32,33 @@ Cukup jalankan langkah berikut, dan docker akan mengurus sisanya:
 
 ### Metode 1: Gunakan Composer (Disarankan)
 Sangat praktis untuk memulai proyek baru:
-## 🚀 Cara Instalasi (Auto-Port Discovery)
+## 🚀 Cara Instalasi (Zero-Conf Native Docker)
 
-Template ini dilengkapi dengan fitur **Auto-Port Discovery**. Jika port default (8000) sudah dipakai di laptop Anda, sistem akan otomatis mencari port lain yang kosong.
+Template ini menggunakan **Pencarian Port Otomatis Bawaan Docker**. Anda tidak perlu pusing memikirkan bentrok port.
 
-1. **Clone repositori ini**:
+1. **Jalankan Project**:
    ```bash
-   git clone https://github.com/sulaksana23/template-docker.git
-   cd template-docker
+   docker compose up -d --build
    ```
 
-2. **Jalankan script otomatis**:
+2. **Cek Alamat Aplikasi**:
+   Karena port dipilih secara otomatis oleh Docker, jalankan perintah ini untuk melihat URL yang aktif:
    ```bash
-   chmod +x start.sh
-   ./start.sh
+   docker compose ps
    ```
-
-3. **Selesai!** Terminal akan menampilkan URL aplikasi Anda (contoh: `http://localhost:8000` atau `http://localhost:8001`).
+   *Lihat bagian `PORTS`. Contoh: `0.0.0.0:32768->80/tcp` berarti buka `http://localhost:32768` di browser Anda.*
 
 ---
 
 ## 🛠️ Cara Manual (Docker Compose)
 Jika Anda lebih suka cara manual:
 1. Copy `.env.example` ke `.env`.
-2. Sesuaikan port di bagian `Docker Port Mapping` jika perlu.
-3. Jalankan `docker compose up -d --build`.
+2. Sesuaikan port di bagian# Docker Port Mapping (Optional Override)
+# Anda bisa membiarkannya kosong untuk pencarian otomatis oleh Docker.
+# APP_PORT=8000
+# DB_PORT=5432
+# REDIS_PORT=6380
+. Jalankan `docker compose up -d --build`.
 
 ### 🏮 Apa yang terjadi saat `up` pertama kali?
 - Docker akan mengunduh core Laravel terbaru ke folder lokal.
