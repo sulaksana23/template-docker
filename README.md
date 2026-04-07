@@ -32,28 +32,31 @@ Cukup jalankan langkah berikut, dan docker akan mengurus sisanya:
 
 ### Metode 1: Gunakan Composer (Disarankan)
 Sangat praktis untuk memulai proyek baru:
-```bash
-composer create-project bali-techsolution/laravel-docker-template my-app
-cd my-app
-```
+## 🚀 Cara Instalasi (Auto-Port Discovery)
 
-### Metode 2: Clone Repositori
-Jika Anda ingin mengakses source code template-nya langsung:
-1. **Clone Repositori**:
+Template ini dilengkapi dengan fitur **Auto-Port Discovery**. Jika port default (8000) sudah dipakai di laptop Anda, sistem akan otomatis mencari port lain yang kosong.
+
+1. **Clone repositori ini**:
    ```bash
-   git clone https://github.com/sulaksana23/template-docker.git my-app
-   cd my-app
+   git clone https://github.com/sulaksana23/template-docker.git
+   cd template-docker
    ```
 
-2. **Siapkan Environment**:
+2. **Jalankan script otomatis**:
    ```bash
-   cp .env.example .env
+   chmod +x start.sh
+   ./start.sh
    ```
 
-3. **Jalankan Docker Compose**:
-   ```bash
-   docker compose up -d --build
-   ```
+3. **Selesai!** Terminal akan menampilkan URL aplikasi Anda (contoh: `http://localhost:8000` atau `http://localhost:8001`).
+
+---
+
+## 🛠️ Cara Manual (Docker Compose)
+Jika Anda lebih suka cara manual:
+1. Copy `.env.example` ke `.env`.
+2. Sesuaikan port di bagian `Docker Port Mapping` jika perlu.
+3. Jalankan `docker compose up -d --build`.
 
 ### 🏮 Apa yang terjadi saat `up` pertama kali?
 - Docker akan mengunduh core Laravel terbaru ke folder lokal.
