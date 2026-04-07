@@ -21,8 +21,14 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     ports:
-      - "${APP_PORT:-8000}:80"      # Host:Container
-      - "${VITE_PORT:-5173}:5173"   # Host:Container
+      # Default published=0 => Docker auto-pick port host yang kosong.
+      # Bisa override via APP_PORT / VITE_PORT jika ingin port tetap.
+      - target: 80
+        published: "${APP_PORT:-0}"
+        protocol: tcp
+      - target: 5173
+        published: "${VITE_PORT:-0}"
+        protocol: tcp
     depends_on:
       - db
       - redis
@@ -41,8 +47,9 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      # Publish container 5432 ke host port acak yang tersedia (anti bentrok)
-      - "5432"
+      - target: 5432
+        published: "${DB_PORT:-0}"
+        protocol: tcp
     networks:
       - laravel-network
     # Optimasi RAM & Performa Postgres
@@ -57,8 +64,9 @@ services:
     container_name: laravel-redis
     restart: unless-stopped
     ports:
-      # Publish container 6379 ke host port acak yang tersedia (anti bentrok)
-      - "6379"
+      - target: 6379
+        published: "${REDIS_PORT:-0}"
+        protocol: tcp
     networks:
       - laravel-network
     # Optimasi RAM Redis
