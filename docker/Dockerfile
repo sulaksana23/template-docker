@@ -34,6 +34,8 @@ RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini \
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY docker/start-laravel.sh /usr/local/bin/start-laravel.sh
+RUN chmod +x /usr/local/bin/start-laravel.sh
 
 # Setup Custom Host User to avoid Permission Denied on WSL/Linux
 ARG USR=sulaksana60
