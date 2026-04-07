@@ -31,6 +31,47 @@ retry_artisan() {
   return 1
 }
 
+ensure_composer_dependencies() {
+  if [ ! -f composer.json ]; then
+    return 0
+  fi
+
+  if [ ! -f vendor/autoload.php ]; then
+    echo "=== vendor/autoload.php missing, running composer install ==="
+    composer install --no-interaction --prefer-dist
+  fi
+}
+
+composer_package_installed() {
+  local package="$1"
+
+  if [ ! -f vendor/autoload.php ]; then
+    return 1
+  fi
+
+  composer show "${package}" --no-interaction >/dev/null 2>&1
+}
+
+ensure_spatie_packages() {
+  ensure_composer_dependencies
+
+  if ! composer_package_installed "spatie/laravel-permission"; then
+    echo "=== Missing spatie/laravel-permission, installing ==="
+    composer require spatie/laravel-permission --no-interaction
+    php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider' --force || true
+  fi
+
+  if ! composer_package_installed "spatie/laravel-activitylog"; then
+    echo "=== Missing spatie/laravel-activitylog, installing ==="
+    composer require spatie/laravel-activitylog --no-interaction
+    php artisan vendor:publish --provider='Spatie\Activitylog\ActivitylogServiceProvider' --tag='activitylog-migrations' --force || true
+  fi
+
+  # Refresh autoloader and clear caches so newly installed traits are always available.
+  composer dump-autoload -o --no-interaction >/dev/null
+  php artisan optimize:clear >/dev/null || true
+}
+
 echo "=== Laravel bootstrap starting ==="
 
 if [ ! -f artisan ]; then
@@ -76,6 +117,11 @@ if [ ! -f artisan ]; then
   retry_artisan "db:seed --force" 10 2
 else
   echo "=== Laravel already installed, skipping bootstrap ==="
+fi
+
+# Self-heal when bootstrap was partial and required packages are missing.
+if [ -f artisan ]; then
+  ensure_spatie_packages
 fi
 
 echo "=== Starting FrankenPHP ==="

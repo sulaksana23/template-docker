@@ -21,8 +21,8 @@ services:
       - caddy_data:/data
       - caddy_config:/config
     ports:
-      - "80"   # Docker akan otomatis cari port kosong di host untuk Web
-      - "5173" # Docker akan otomatis cari port kosong di host untuk Vite
+      - "${APP_PORT:-8000}:80"      # Host:Container
+      - "${VITE_PORT:-5173}:5173"   # Host:Container
     depends_on:
       - db
       - redis
@@ -41,7 +41,7 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
     ports:
-      - "5432" # Docker akan otomatis cari port kosong di host untuk DB
+      - "${DB_PORT:-5432}:5432"
     networks:
       - laravel-network
     # Optimasi RAM & Performa Postgres
@@ -56,7 +56,7 @@ services:
     container_name: laravel-redis
     restart: unless-stopped
     ports:
-      - "6379" # Docker akan otomatis cari port kosong di host untuk Redis
+      - "${REDIS_PORT:-6379}:6379"
     networks:
       - laravel-network
     # Optimasi RAM Redis

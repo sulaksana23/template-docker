@@ -33,31 +33,37 @@ Cukup jalankan langkah berikut, dan docker akan mengurus sisanya:
 Sangat praktis untuk memulai proyek baru:
 ## 🚀 Cara Instalasi (Zero-Conf Native Docker)
 
-Template ini menggunakan **Pencarian Port Otomatis Bawaan Docker**. Anda tidak perlu pusing memikirkan bentrok port.
+Template ini menggunakan port default yang konsisten agar mudah diakses di browser.
 
 1. **Jalankan Project**:
    ```bash
    docker compose up -d --build
    ```
 
-2. **Cek Alamat Aplikasi**:
-   Karena port dipilih secara otomatis oleh Docker, jalankan perintah ini untuk melihat URL yang aktif:
+2. **Akses Aplikasi**:
+   Buka:
+   ```text
+   http://localhost:8000
+   ```
+   Jika tidak bisa diakses, cek status:
    ```bash
    docker compose ps
+   docker compose logs --tail=100 app
    ```
-   *Lihat bagian `PORTS`. Contoh: `0.0.0.0:32768->80/tcp` berarti buka `http://localhost:32768` di browser Anda.*
 
 ---
 
 ## 🛠️ Cara Manual (Docker Compose)
 Jika Anda lebih suka cara manual:
 1. Copy `.env.example` ke `.env`.
-2. Sesuaikan port di bagian# Docker Port Mapping (Optional Override)
-# Anda bisa membiarkannya kosong untuk pencarian otomatis oleh Docker.
-# APP_PORT=8000
-# DB_PORT=5432
-# REDIS_PORT=6380
-. Jalankan `docker compose up -d --build`.
+2. Sesuaikan port di `.env` bila perlu:
+   ```env
+   APP_PORT=8000
+   VITE_PORT=5173
+   DB_PORT=5432
+   REDIS_PORT=6379
+   ```
+3. Jalankan `docker compose up -d --build`.
 
 ### 🏮 Apa yang terjadi saat `up` pertama kali?
 - Docker akan mengunduh core Laravel terbaru ke folder lokal.
@@ -72,7 +78,7 @@ Jika Anda lebih suka cara manual:
 
 - **App**: `Laravel 13` + `FrankenPHP` (Port 8000)
 - **DB**: `PostgreSQL 15` (Port 5432)
-- **Cache**: `Redis` (Port 6380)
+- **Cache**: `Redis` (Port 6379)
 
 ---
 
