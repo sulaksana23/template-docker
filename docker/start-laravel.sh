@@ -90,15 +90,35 @@ activitylog_trait_available() {
 ensure_spatie_packages() {
   ensure_composer_dependencies
 
+  local missing_permission=0
+  local missing_activitylog=0
+
   if ! composer_package_installed "spatie/laravel-permission"; then
-    echo "=== Missing spatie/laravel-permission, installing ==="
-    composer require spatie/laravel-permission --no-interaction
-    php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider' --force || true
+    missing_permission=1
   fi
 
   if ! composer_package_installed "spatie/laravel-activitylog"; then
+    missing_activitylog=1
+  fi
+
+  # Install both packages first before running any artisan command.
+  # This prevents boot errors when User model already uses LogsActivity.
+  if [ "${missing_permission}" -eq 1 ] && [ "${missing_activitylog}" -eq 1 ]; then
+    echo "=== Missing Spatie packages, installing permission + activitylog ==="
+    composer require spatie/laravel-permission spatie/laravel-activitylog --no-interaction
+  elif [ "${missing_permission}" -eq 1 ]; then
+    echo "=== Missing spatie/laravel-permission, installing ==="
+    composer require spatie/laravel-permission --no-interaction
+  elif [ "${missing_activitylog}" -eq 1 ]; then
     echo "=== Missing spatie/laravel-activitylog, installing ==="
     composer require spatie/laravel-activitylog --no-interaction
+  fi
+
+  if [ "${missing_permission}" -eq 1 ]; then
+    php artisan vendor:publish --provider='Spatie\Permission\PermissionServiceProvider' --force || true
+  fi
+
+  if [ "${missing_activitylog}" -eq 1 ]; then
     php artisan vendor:publish --provider='Spatie\Activitylog\ActivitylogServiceProvider' --tag='activitylog-migrations' --force || true
   fi
 
