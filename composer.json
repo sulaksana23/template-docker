@@ -1,0 +1,47 @@
+{
+    "name": "bali-techsolution/laravel-docker-template",
+    "description": "A professional Laravel 13 Docker template featuring FrankenPHP, PostgreSQL, Redis, and automated installation for seamless development and production-ready deployments.",
+    "type": "project",
+    "keywords": [
+        "laravel",
+        "laravel-13",
+        "docker",
+        "docker-compose",
+        "frankenphp",
+        "postgresql",
+        "redis",
+        "boilerplate",
+        "template",
+        "inertiajs",
+        "react",
+        "typescript",
+        "tailwindcss"
+    ],
+    "homepage": "https://trakteer.id/bali_techsolution",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bali Techsolution",
+            "email": "dev@balitechsolution.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "support": {
+        "issues": "https://gitlab.com/bali-techsolution/laravel-docker-template/issues",
+        "source": "https://gitlab.com/bali-techsolution/laravel-docker-template"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

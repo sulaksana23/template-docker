@@ -28,10 +28,19 @@ Pastikan Anda sudah menginstal:
 
 Cukup jalankan langkah berikut, dan docker akan mengurus sisanya:
 
+### Metode 1: Gunakan Composer (Disarankan)
+Sangat praktis untuk memulai proyek baru:
+```bash
+composer create-project bali-techsolution/laravel-docker-template my-app
+cd my-app
+```
+
+### Metode 2: Clone Repositori
+Jika Anda ingin mengakses source code template-nya langsung:
 1. **Clone Repositori**:
    ```bash
-   git clone <url-repo-template-anda> my-new-project
-   cd my-new-project
+   git clone https://gitlab.com/bali-techsolution/laravel-docker-template.git my-app
+   cd my-app
    ```
 
 2. **Siapkan Environment**:
